@@ -5,7 +5,7 @@ import random as rand
 
 
 VALID_GROUPS = ["pubsafety", "office"]
-VALID_DEPTS = ["security", "ceo"]
+VALID_DEPTS = ["security", "ceo", "office"]
 
 # processes the input csv file
 # returns a list of dicts with the user info in each
@@ -134,12 +134,13 @@ def add_user(user: dict):
     sp.run(["sudo", "useradd", uname,
                     "-d", f"/home/{user['dept']}/{uname}",
                     "-s", shell,
-                    "-p", passwd,
-                    "-g", user["group"],
+                    "-g", user["group"]
+                    #"-p", "changeme",
                     #"-u", user["id"]
                     ],
                     check=True)
-    # expire passwd
+    # set + expire passwd
+    sp.run(["sudo", "passwd", uname], input=f"{passwd}\n{passwd}".encode(), check=True, stderr=sp.DEVNULL, stdout=sp.DEVNULL)
     sp.run(["sudo", "passwd", "-e", uname], check=True, stderr=sp.DEVNULL, stdout=sp.DEVNULL)
     print(f"\tSuccessfully added user {uname}")
 
