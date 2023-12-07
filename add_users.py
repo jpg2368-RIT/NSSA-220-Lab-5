@@ -148,13 +148,10 @@ def add_user(user: dict):
     
 
 def main(args: list):
-    if len(args) > 2:
-        print("\nIncorrect usage\nTry \"lab5.py [file]\"\n")
+    if len(args) != 2:
+        print("\nIncorrect usage\nTry \"add_users.py [file]\"\n")
         exit(1)
-    elif len(args) == 2:
-        filename = args[1]
-    else:
-        filename = input("Filename: ")
+    filename = args[1]
     print(f"\nProcessing file {filename}...")
     try:
         listings = process_file(filename)
